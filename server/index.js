@@ -9,6 +9,7 @@ app.use(express.json())
 
 import User from './model/user.js';
 import Product from './model/product.js';
+import Order from './model/order.js'
 
 
 const connectmongodb = async ()=>{
@@ -191,7 +192,92 @@ app.get('/shop', async (req, res) => {
 
 
 
+// oder API
 
+// post order creating
+
+app.post('/order' , async(req,res)=>{
+const {user,product,quantity,shippingAddress,deliveryCharges} = req.body
+
+const order = new Order({
+    user:user,
+    product:product,
+    quantity:quantity,
+    shippingAddress:shippingAddress,
+    deliveryCharges:deliveryCharges
+}) 
+
+try{
+    const savedorder = await order.save();
+res.json({
+    success:true,
+    data:savedorder,
+    message:"succesfully oreder created"
+})
+}
+catch(e){
+    res.json({
+        success:false,
+        message:e.message
+    })
+}
+})
+
+// get order fetch by id
+
+app.get ("/order/:_id" , async(req,res) =>{
+    const {_id} = req.params
+    const findorder = await Order.findOne({_id:_id}).populate("user product")
+    res.json({
+        success:true,
+        data:findorder,
+        message:"order find succesfully"
+    })
+})
+// get order fetch by id 
+
+// get user/:id se
+app.get ('/order/user/:_id' , async(req,res)=>{
+const {_id} = req.params
+const finduser = await Order.find({user:_id}).populate("user product")
+finduser.forEach((order)=>{
+order.user.password  = undefined
+})
+res.json({
+    success:true,
+    data:finduser,
+    message:"users oder find succesfully"
+})
+})
+// get user/:id se 
+
+// patch id se
+app.patch('/oder/:_id' , async(req,res)=>{
+const {_id}  = req.params
+const {status} = req.body
+const updatestauts = await Order.updateOne({_id:_id} , {$set:{status:status}})
+const findupdate = await Order.findOne({_id:_id})
+res.json({
+    success:true,
+    data:findupdate,
+    message:"update succesfully"
+})
+})
+// patch using id
+
+// find all order 
+app.get("/orderall" , async(req,res)=>{
+const findAll = await Order.find().populate("user product");
+findAll.forEach((oder)=>{
+oder.user.password = undefined
+})
+res.json({
+    success:true,
+    data:findAll,
+    message:"all order find succesfully "
+})
+})
+// find all order 
 app.listen(PORT, ()=>{
     console.log(`server is on ${PORT}`);
     connectmongodb();
