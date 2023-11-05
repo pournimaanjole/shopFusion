@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
 import './Signup.css'
 import axios from 'axios'
+import {Link}  from 'react-router-dom'
+import { useEffect } from 'react'
+
 
 const Signup = () => {
+  
 
     const [name, setname] = useState('')
     const [email, setemail] = useState('')
@@ -11,7 +15,7 @@ const Signup = () => {
     const [address, setaddress] = useState('')
     const [gender, setgender] = useState('female') 
 
-    const Signup = async ()=>{
+    const sign = async ()=>{
         if(!name){
             alert("name is required")
             return
@@ -48,8 +52,19 @@ const Signup = () => {
         }
 
     }
+
+    
+  useEffect(()=>{
+    const user = JSON.parse(localStorage.getItem('login' || '{}'))
+    if(user?.email) {
+      alert('you are already loged in ')
+      window.location.href= '/'
+    }
+  },[])
+
     return (
         <div>
+       
             <h1>signup page</h1>
 
             <div>
@@ -72,7 +87,7 @@ const Signup = () => {
                     {/* email input box */}
                     <div>
                         <label htmlFor='email'>Email</label>
-                        <input type='text'
+                        <input type='email'
                             value={email}
                             placeholder='enter your email'
                             onChange={(e) => {
@@ -100,7 +115,7 @@ const Signup = () => {
                     {/* password input box */}
                     <div>
                         <label htmlFor='password'>Password</label>
-                        <input type='text'
+                        <input type='password'
                             value={password}
                             placeholder='enter your password'
                             onChange={(e) => {
@@ -116,7 +131,7 @@ const Signup = () => {
                         <label htmlFor='address'>Address</label>
                         <input type='text'
                             value={address}
-                            placeholder='enter your name'
+                            placeholder='enter your address'
                             onChange={(e) => {
                                 setaddress(e.target.value)
 
@@ -141,7 +156,10 @@ const Signup = () => {
                     {/* gender input box */}
                 </form>
 
-                <button type='button' onClick={Signup} >signup</button>
+                <button type='button' onClick={sign} >signup</button>
+               
+                    {/* <Link to='/login'>already have an account</Link> */}
+           
             </div>
         </div>
     )

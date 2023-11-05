@@ -9,7 +9,7 @@ app.use(express.json())
 
 import User from './model/user.js';
 import Product from './model/product.js';
-import Order from './model/order.js'
+import Order from './model/order.js';
 
 
 const connectmongodb = async ()=>{
@@ -278,6 +278,10 @@ res.json({
 })
 })
 // find all order 
+
+// post request for popular item 
+
+// post request for popular item
 app.listen(PORT, ()=>{
     console.log(`server is on ${PORT}`);
     connectmongodb();
