@@ -5,11 +5,20 @@ import axios from 'axios'
 const Buynow = () => {
     const {id} = useParams()
     const [quantity,setquantity] = useState(1)
-    const [address,setaddress] = useState('')
-    const [product,setProduct] = useState({})
+     const [product,setProduct] = useState({})
+     const [shippingAddress , setShipingAddress] = useState('')
+
     const loadproduct = async () =>{
-        const response = await axios.get(`/shop-product/${id}`)
-        setProduct(response?.data?.data);
+
+        try{
+            const response = await axios.get(`/shop-product/${id}`)
+            setProduct(response?.data?.data);
+
+        }
+        catch(e){
+            console.log(e)
+        }
+        
     }
     useEffect(()=>{
         loadproduct();
@@ -26,28 +35,44 @@ const Buynow = () => {
     }
 
     const ordernow = async ()=>{
-        const userdata = JSON.parse(localStorage.getItem('login'))
+        const userdata = JSON.parse(localStorage.getItem('login' || '{}'))
         const oder ={
             user:userdata._id,
             product:id,
             quantity:quantity,
-            address:address
+            shippingAddress:shippingAddress
         }
+try{
+    const response = await axios.post('/order' ,oder)
+    alert(response?.data?.message)
+    if(response?.data?.success){
+        window.location.href='/order'
+    }
+}
+catch(e){
+    console.log(e)
+}
+
+       
         
     }
   return (
     <div>
+        <h1>buynow page</h1>
       {product.name}
 <span onClick={increse}>increase</span>
 <span>{quantity}</span>
 <span onClick={decrese}>decrese</span>
-<input type='text'
- value={address}
- placeholder='enter your address'
-  onClick={(e)=>{
-setaddress(e.target.value)
-}} />
-<button onClick={ordernow}>ordernow</button>
+<br/>
+<input type='text' 
+value={shippingAddress}
+placeholder='enter your address'
+onChange={(e)=>{
+setShipingAddress(e.target.value)
+}}
+/>
+
+<button type='button' onClick={ordernow}>ordernow</button>
     </div>
   )
 }

@@ -60,7 +60,7 @@ const Navbar = () => {
           user?.name ? (<span onClick={() => {
             localStorage.removeItem('login')
 
-            window.location.href('/login')
+            window.location.href='/login'
           }} className='logout'>logout</span>)
             : null
         }
