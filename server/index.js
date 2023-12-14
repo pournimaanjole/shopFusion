@@ -10,6 +10,8 @@ app.use(express.json())
 import User from './model/user.js';
 import Product from './model/product.js';
 import Order from './model/order.js';
+import path from 'path'
+const __dirname = path.resolve();
 
 
 const connectmongodb = async ()=>{
@@ -47,6 +49,7 @@ catch(error){
 
 app.post("/login" , async(req,res)=>{
 const {email,password} = req.body
+
 const finduser = await User.findOne({
     email:email,
     password:password
@@ -282,6 +285,13 @@ res.json({
 // post request for popular item 
 
 // post request for popular item
+
+if(process.env.NODE_ENV === "production"){
+    app.use(express.static(path.join(__dirname,'..','client','build')))
+    app.get('*',(req,res)=>{
+res.sendFile(path.join(__dirname,'..','client' , 'build' ,'index.html'))
+    })
+}
 app.listen(PORT, ()=>{
     console.log(`server is on ${PORT}`);
     connectmongodb();
