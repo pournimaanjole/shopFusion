@@ -1,0 +1,33 @@
+.order-div{
+    background-color: #fce3fe;
+    height: 100vh;
+    width: 100vw;
+
+    
+
+}
+.second-div{
+border: 1px solid black; 
+padding-top: 3rem;
+height: 100vh;
+}
+
+.order-card{
+border: 1px solid black;
+border-radius: 1rem;
+width: 800px;
+height: 100px;
+margin:  auto;
+padding: 1rem 3rem;
+position: relative;
+}
+.span{
+    font-size: 1.3rem;
+    font-weight: 600;
+   
+}
+.status{
+    position: absolute;
+    top: 1rem;
+   right: 10rem;
+}

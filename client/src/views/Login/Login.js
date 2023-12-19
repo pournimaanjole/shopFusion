@@ -21,7 +21,7 @@ const Login = () => {
 
   useEffect(()=>{
     const user = JSON.parse(localStorage.getItem('login' || '{}'))
-    if(user.email) {
+    if(user?.email) {
       alert('you are already loged in ')
     window.location.href='/'
     }
